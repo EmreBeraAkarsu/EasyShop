@@ -5,10 +5,7 @@ import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,14 +67,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public Category create(Category category)
     {
-        String query = "INSERT INTO Categories (name, description) VALUES (?, ?, ?)";
+        String query = "INSERT INTO Categories (name, description) VALUES (?, ?)";
 
-        try (Connection connection = dataSource.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            preparedStatement.setString(1, book.getTitle());
-            preparedStatement.setString(2, book.getAuthor());
-            preparedStatement.setInt(3, book.getPublicationYear());
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setString(2, category.getDescription());
 
             int rows = preparedStatement.executeUpdate();
 
@@ -88,7 +84,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
-                    book.setId(generatedId);
+                    category.setCategoryId(generatedId);
                 }
             }
 
@@ -96,7 +92,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             e.printStackTrace();
         }
 
-        return book;
+        return category;
     }
 
     @Override

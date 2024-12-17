@@ -24,11 +24,13 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         List<Product> products = new ArrayList<>();
 
         //Bug #1: Query did not have a filter for min price
+        // Added the line for searching the min price
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
                 "   AND (price <= ? OR ? = -1) " +
                 "   AND (price >= ? OR ? = -1) " +
                 "   AND (color = ? OR ? = '') ";
+
 
         categoryId = categoryId == null ? -1 : categoryId;
         minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
@@ -39,6 +41,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         {
 
             //Bug #1: max price was not implemented below
+            //Added the min price assigning for the corresponding question mark
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, categoryId);
             statement.setInt(2, categoryId);

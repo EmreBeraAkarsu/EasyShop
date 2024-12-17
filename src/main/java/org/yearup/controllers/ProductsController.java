@@ -86,6 +86,7 @@ public class ProductsController
         try
         {
             //BUG #2:  This one was calling create method. It should call the update method
+            // changed the below line to .update as this method is for updating the product
             productDao.update(id, product);
         }
         catch(Exception ex)

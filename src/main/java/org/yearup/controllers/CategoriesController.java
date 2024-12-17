@@ -12,20 +12,21 @@ import org.yearup.models.Product;
 
 import java.util.List;
 
-// add the annotations to make this a REST controller
-// add the annotation to make this controller the endpoint for the following url
-    // http://localhost:8080/categories
-// add annotation to allow cross site origin requests
+
+//Added annotation for using the rest controller
 @RestController
+//Added annotation above the class to have the common url outlined for the methods below
 @RequestMapping("categories")
+//Added to have the server handle requests from different origins
 @CrossOrigin
 public class CategoriesController
 {
+    //Both DAO s are used in this classes methods. We need to have a class wide variable to access those DAO s
     private CategoryDao categoryDao;
     private ProductDao productDao;
 
 
-    // create an Autowired controller to inject the categoryDao and ProductDao
+    // creates an Autowired controller to inject the categoryDao and ProductDao
 
     @Autowired
     public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {

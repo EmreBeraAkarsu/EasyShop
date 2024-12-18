@@ -26,7 +26,7 @@ public class CategoriesController
     private ProductDao productDao;
 
 
-    // creates an Autowired controller to inject the categoryDao and ProductDao
+    // created an Autowired controller to inject the categoryDao and ProductDao
 
     @Autowired
     public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {
@@ -35,8 +35,9 @@ public class CategoriesController
     }
 
 
-    // add the appropriate annotation for a get action
+    //GetMapping annotation used to use this method for get all categories requests. URL is only the default path
     @GetMapping("")
+    //Let all users without any need for login to access the method
     @PreAuthorize("permitAll()")
     public List<Category> getAll()
     {
@@ -44,63 +45,78 @@ public class CategoriesController
         return categoryDao.getAllCategories();
     }
 
-    // add the appropriate annotation for a get action
+    //GetMapping annotation used to use this method for get a category with a specific id requests. URL is categories/{id}
     @GetMapping("/{id}")
+    //Let all users without any need for login to access the method
     @PreAuthorize("permitAll()")
+    //Path needs the id variable to provide a specific category. It is given as a PathVariable
     public Category getById(@PathVariable int id)
     {
 
+        //Initiate the category as null
         Category category = null;
 
+        //Call the Dao's method to get the category by id
         category = categoryDao.getById(id);
 
+        //Throw an exception if the category is null
         if (category == null){
 
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+        //Return the retrieved category
         return category;
     }
 
-    // the url to return all products in category 1 would look like this
-    // https://localhost:8080/categories/1/products
+    //GetMapping annotation used to use this method for get a category with a specific id requests. URL is categories/{categoryid}/products
     @GetMapping("{categoryId}/products")
+    //Let all users without any need for login to access the method
+    @PreAuthorize("permitAll()")
+    //Path needs the Categoryid variable to provide a specific category. It is given as a PathVariable
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
 
         return productDao.listByCategoryId(categoryId);
     }
 
-    // add annotation to call this method for a POST action
-    // add annotation to ensure that only an ADMIN can call this function
-    @PostMapping
+
+
+    //PostMapping annotation used to use this method for post a new category. URL is categories
+    @PostMapping("")
+    //This method is only authorized to admins with the below annotation
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
+    //The new category information will be passed as a request body. The return of this method is a category with the id
     public Category addCategory(@RequestBody Category category)
     {
-        // insert the category
+        // insert the category by calling the create function of the Category DAO and return the category with the id
         return categoryDao.create(category);
     }
 
-    // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
+
+    //PutMapping annotation used to use this method for post a new category. URL is categories/{id}
     @PutMapping("/{id}")
+    //This method is only authorized to admins with the below annotation
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //The new category information as request body and id of the category wanted to be updated will be passed as a path variable.
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
-        // update the category by id
+        // update the category by id by calling the method of DAO
         categoryDao.update(id, category);
     }
 
 
-    // add annotation to call this method for a DELETE action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
+    //DeleteMapping annotation used to use this method for post a new category. URL is categories/{id}
     @DeleteMapping("/{id}")
+    //This method is only authorized to admins with the below annotation
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //Give 204 status response when it is successful
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    //The id of the category wanted to be updated will be passed as a request body.
     public void deleteCategory(@PathVariable int id)
     {
-        // delete the category by id
+        // delete the category by id by calling the DAO method
         categoryDao.delete(id);
     }
 }

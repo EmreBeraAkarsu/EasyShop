@@ -2,9 +2,8 @@
 
 ## Description of the Project
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
-
-![Class Diagram](path/to/your/class_diagram.png)
+This project is an API of a web store online shopping application. It handles the functionalities of product search according to their categories, prices, and colors. It also handles the authentication and authorization of the users for CRUD. It has the needed connecgtion to the database and the frontend of the application.
+![database diagram.PNG](imgs%2Fdatabase%20diagram.PNG)
 
 ## User Stories
 

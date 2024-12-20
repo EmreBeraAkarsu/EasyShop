@@ -136,7 +136,17 @@ public class CategoriesController
     //The id of the category wanted to be updated will be passed as a request body.
     public void deleteCategory(@PathVariable int id)
     {
-        // delete the category by id by calling the DAO method
-        categoryDao.delete(id);
+        try {
+            var category = categoryDao.getById(id);
+
+            if (category == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+
+            // delete the category by id by calling the DAO method
+            categoryDao.delete(id);
+        } catch (ResponseStatusException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 }

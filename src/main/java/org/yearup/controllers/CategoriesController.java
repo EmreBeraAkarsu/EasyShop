@@ -41,8 +41,12 @@ public class CategoriesController
     @PreAuthorize("permitAll()")
     public List<Category> getAll()
     {
-        // find and return all categories
-        return categoryDao.getAllCategories();
+        try {
+            // find and return all categories
+            return categoryDao.getAllCategories();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
     //GetMapping annotation used to use this method for get a category with a specific id requests. URL is categories/{id}

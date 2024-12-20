@@ -102,8 +102,12 @@ public class CategoriesController
     //The new category information will be passed as a request body. The return of this method is a category with the id
     public Category addCategory(@RequestBody Category category)
     {
-        // insert the category by calling the create function of the Category DAO and return the category with the id
-        return categoryDao.create(category);
+        try {
+            // insert the category by calling the create function of the Category DAO and return the category with the id
+            return categoryDao.create(category);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
 
@@ -114,8 +118,12 @@ public class CategoriesController
     //The new category information as request body and id of the category wanted to be updated will be passed as a path variable.
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
-        // update the category by id by calling the method of DAO
-        categoryDao.update(id, category);
+        try {
+            // update the category by id by calling the method of DAO
+            categoryDao.update(id, category);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
 

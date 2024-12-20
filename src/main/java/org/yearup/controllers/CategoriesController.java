@@ -60,8 +60,12 @@ public class CategoriesController
         //Initiate the category as null
         Category category = null;
 
-        //Call the Dao's method to get the category by id
-        category = categoryDao.getById(id);
+        try {
+            //Call the Dao's method to get the category by id
+            category = categoryDao.getById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
 
         //Throw an exception if the category is null
         if (category == null){
@@ -81,7 +85,11 @@ public class CategoriesController
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
 
-        return productDao.listByCategoryId(categoryId);
+        try {
+            return productDao.listByCategoryId(categoryId);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
 
